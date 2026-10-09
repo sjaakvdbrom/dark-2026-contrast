@@ -1,0 +1,52 @@
+{
+  "name": "dark-2026-contrast",
+  "displayName": "Dark 2026 Contrast",
+  "description": "A slightly higher-contrast take on the VS Code Dark 2026 theme.",
+  "version": "0.1.0",
+  "publisher": "sjaakvdbrom",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.140.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "theme",
+    "dark",
+    "contrast",
+    "dark 2026"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sjaakvdbrom/dark-2026-contrast"
+  },
+  "bugs": {
+    "url": "https://github.com/sjaakvdbrom/dark-2026-contrast/issues"
+  },
+  "homepage": "https://github.com/sjaakvdbrom/dark-2026-contrast",
+  "galleryBanner": {
+    "color": "#101010",
+    "theme": "dark"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "label": "Dark 2026 Contrast",
+        "uiTheme": "vs-dark",
+        "path": "./themes/dark-2026-contrast-color-theme.json"
+      },
+      {
+        "label": "Dark 2026 High Contrast",
+        "uiTheme": "hc-black",
+        "path": "./themes/dark-2026-high-contrast-color-theme.json"
+      }
+    ],
+    "configurationDefaults": {
+      "workbench.colorTheme": "Dark 2026 Contrast"
+    }
+  },
+  "scripts": {
+    "package": "npx --yes @vscode/vsce package --no-dependencies"
+  }
+}

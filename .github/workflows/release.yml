@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate tag version
+        run: |
+          package_version="$(node -p "require('./package.json').version")"
+          tag_version="${GITHUB_REF_NAME#v}"
+          test "$package_version" = "$tag_version"
+
+      - name: Package extension
+        run: npx --yes @vscode/vsce package --no-dependencies
+
+      - name: Publish to Visual Studio Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          vsix="$(find . -maxdepth 1 -name '*.vsix' -print -quit)"
+          test -n "$vsix"
+          npx --yes @vscode/vsce publish --packagePath "$vsix" --pat "$VSCE_PAT"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          vsix="$(find . -maxdepth 1 -name '*.vsix' -print -quit)"
+          gh release create "$GITHUB_REF_NAME" "$vsix" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
